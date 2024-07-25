@@ -1,7 +1,9 @@
 package com.example.investigacion01todolist
 
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.ListView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -19,11 +21,20 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val btnAddTodo = findViewById<Button>(R.id.btnAddTodo)
+        //creamos un adaptador que es el que nos permitira mostrar los datos
+        val arrayAdapter:ArrayAdapter<*>
 
-        btnAddTodo.setOnClickListener{
+        //lita que se mostrara
+        val datos = mutableListOf("Prueba 01", "Prueba 02")
 
-        }
+        //capturamos el listView de nuestro layout
+        val lvdatos = findViewById<ListView>(R.id.lvDatos)
+
+        //le pasamos los datos a nuestro adapter
+        arrayAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1, datos)
+
+        lvdatos.adapter = arrayAdapter
+
     }
 }
 

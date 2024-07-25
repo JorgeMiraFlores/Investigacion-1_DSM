@@ -1,59 +1,46 @@
 package com.example.investigacion01todolist
 
 import android.os.Bundle
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.investigacion01todolist.ui.theme.Investigacion01ToDoListTheme
+import com.example.investigacion01todolist.R
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //creamos un adaptador que es el que nos permitira mostrar los datos
-        val arrayAdapter:ArrayAdapter<*>
+        // Lista que se mostrará
+        val datos = mutableListOf(
+            Task("Prueba 01", false),
+            Task("Prueba 02", false)
+        )
 
-        //lita que se mostrara
-        val datos = mutableListOf("Prueba 01", "Prueba 02")
+        // Creamos el adaptador personalizado con la lista de tareas
+        val taskAdapter = TaskAdapter(this, datos)
 
-        //capturamos el listView de nuestro layout
+        // Capturamos el ListView de nuestro layout
         val lvdatos = findViewById<ListView>(R.id.lvDatos)
 
-        //capturamos el campo de entrada y el boton
+        // Capturamos el campo de entrada y el botón
         val etNewTask = findViewById<EditText>(R.id.etNewTask)
         val btnAddTask = findViewById<Button>(R.id.btnAddTask)
 
-        //le pasamos los datos a nuestro adapter
-        arrayAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1, datos)
+        lvdatos.adapter = taskAdapter
 
-        lvdatos.adapter = arrayAdapter
-
-
-
-        //funcion del boton
-        btnAddTask.setOnClickListener{
-            //capturamos el dato
+        // Configuramos el botón para añadir tareas
+        btnAddTask.setOnClickListener {
+            // Capturamos el dato del campo de entrada
             val newTask = etNewTask.text.toString()
-            //si no esta vacio
+            // Si no está vacío
             if (newTask.isNotEmpty()) {
-                //agregamos el dato a nuestro arreglo
-                datos.add(newTask)
-                arrayAdapter.notifyDataSetChanged()
-                etNewTask.text.clear()
+                // Agregamos el dato a nuestro arreglo
+                datos.add(Task(newTask, false))
+                taskAdapter.notifyDataSetChanged() // Notificamos al adaptador del cambio
+                etNewTask.text.clear() // Limpiamos el campo de entrada
             }
         }
     }
 }
-

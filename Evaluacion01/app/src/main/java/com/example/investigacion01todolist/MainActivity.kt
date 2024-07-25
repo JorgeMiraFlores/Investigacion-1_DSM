@@ -3,6 +3,7 @@ package com.example.investigacion01todolist
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ListView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -30,11 +31,29 @@ class MainActivity : ComponentActivity() {
         //capturamos el listView de nuestro layout
         val lvdatos = findViewById<ListView>(R.id.lvDatos)
 
+        //capturamos el campo de entrada y el boton
+        val etNewTask = findViewById<EditText>(R.id.etNewTask)
+        val btnAddTask = findViewById<Button>(R.id.btnAddTask)
+
         //le pasamos los datos a nuestro adapter
         arrayAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1, datos)
 
         lvdatos.adapter = arrayAdapter
 
+
+
+        //funcion del boton
+        btnAddTask.setOnClickListener{
+            //capturamos el dato
+            val newTask = etNewTask.text.toString()
+            //si no esta vacio
+            if (newTask.isNotEmpty()) {
+                //agregamos el dato a nuestro arreglo
+                datos.add(newTask)
+                arrayAdapter.notifyDataSetChanged()
+                etNewTask.text.clear()
+            }
+        }
     }
 }
 

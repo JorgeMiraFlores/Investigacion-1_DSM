@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.CheckBox
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 
 // Clase de datos para representar una tarea con un nombre y un estado de finalización
 data class Task(val name: String, var isCompleted: Boolean)
@@ -43,8 +42,9 @@ class TaskAdapter(private val context: Context, private val tasks: MutableList<T
         // Obtiene la tarea para la posición actual
         val task = tasks[position]
 
-
-
+        // Establece el nombre de la tarea y el estado de finalización en la vista
+        viewHolder.taskName.text = task.name
+        viewHolder.completed.isChecked = task.isCompleted
 
         // Establece un listener para actualizar el estado de finalización de la tarea cuando se haga clic en el checkbox
         viewHolder.completed.setOnCheckedChangeListener { _, isChecked ->

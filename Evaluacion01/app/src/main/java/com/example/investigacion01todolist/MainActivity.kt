@@ -1,5 +1,6 @@
 package com.example.investigacion01todolist
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -13,10 +14,7 @@ class MainActivity : ComponentActivity() {
         setContentView(R.layout.activity_main)
 
         // Lista que se mostrará
-        val datos = mutableListOf(
-            Task("Prueba 01", false),
-            Task("Prueba 02", false)
-        )
+        val datos = mutableListOf<Task>()
 
         // Creamos el adaptador personalizado con la lista de tareas
         val taskAdapter = TaskAdapter(this, datos)
@@ -41,6 +39,34 @@ class MainActivity : ComponentActivity() {
                 taskAdapter.notifyDataSetChanged() // Notificamos al adaptador del cambio
                 etNewTask.text.clear() // Limpiamos el campo de entrada
             }
+        }
+
+        //agregamos una funcion al listview que es cuando se mantenga presionado por momento le permita eliminar
+        //se utiliza el parent, la vista, la posicion del objeto y el id
+        lvdatos.setOnItemLongClickListener{parent,view, position,id ->
+
+            //Creamos un cuadro de alerta que permita el usuario elegir
+            AlertDialog.Builder(this).apply {
+                //titulo de la alerta
+                setTitle("Confirmar Eliminacion")
+                //mensaje de la alerta
+                setMessage("Estas seguro de eliminar esta tarea")
+                //si presiona si
+                setPositiveButton("SI"){dialog, which ->
+
+                    //con esta funcion removemos el objeto de la posicion
+                    datos.removeAt(position)
+                    //notificamos si quiere ser eliminado
+                    taskAdapter.notifyDataSetChanged()
+                }//si presiona NO
+                setNegativeButton("No") { dialog, which ->
+                    // Cancelamos la acción
+                    dialog.dismiss()
+                }
+                create()
+                show()
+            }
+            true
         }
     }
 }

@@ -7,8 +7,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
 import androidx.activity.ComponentActivity
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 
 class MainActivity : ComponentActivity() {
     private lateinit var taskAdapter: TaskAdapter
@@ -76,22 +74,22 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun saveTasks() {
-        val sharedPreferences = getSharedPreferences("tasks_prefs", MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences("tasks_prefs", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
-        val gson = Gson()
-        val json = gson.toJson(datos)
-        editor.putString("tasks_list", json)
+        val tasksString = datos.joinToString(";") { "${it.name},${it.isCompleted}" }
+        editor.putString("tasks_list", tasksString)
         editor.apply()
     }
 
     private fun loadTasks() {
-        val sharedPreferences = getSharedPreferences("tasks_prefs", MODE_PRIVATE)
-        val gson = Gson()
-        val json = sharedPreferences.getString("tasks_list", null)
-        val type = object : TypeToken<MutableList<Task>>() {}.type
-        if (json != null) {
-            val loadedTasks: MutableList<Task> = gson.fromJson(json, type)
-            datos.addAll(loadedTasks)
+        val sharedPreferences = getSharedPreferences("tasks_prefs", Context.MODE_PRIVATE)
+        val tasksString = sharedPreferences.getString("tasks_list", null)
+        if (!tasksString.isNullOrEmpty()) {
+            val tasks = tasksString.split(";").map {
+                val taskData = it.split(",")
+                Task(taskData[0], taskData[1].toBoolean())
+            }
+            datos.addAll(tasks)
         }
     }
 }

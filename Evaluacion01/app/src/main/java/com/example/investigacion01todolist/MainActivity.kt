@@ -1,23 +1,28 @@
 package com.example.investigacion01todolist
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
 import androidx.activity.ComponentActivity
-import com.example.investigacion01todolist.R
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class MainActivity : ComponentActivity() {
+    private lateinit var taskAdapter: TaskAdapter
+    private val datos = mutableListOf<Task>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Lista que se mostrará
-        val datos = mutableListOf<Task>()
+        // Cargar tareas desde SharedPreferences
+        loadTasks()
 
         // Creamos el adaptador personalizado con la lista de tareas
-        val taskAdapter = TaskAdapter(this, datos)
+        taskAdapter = TaskAdapter(this, datos)
 
         // Capturamos el ListView de nuestro layout
         val lvdatos = findViewById<ListView>(R.id.lvDatos)
@@ -38,27 +43,27 @@ class MainActivity : ComponentActivity() {
                 datos.add(Task(newTask, false))
                 taskAdapter.notifyDataSetChanged() // Notificamos al adaptador del cambio
                 etNewTask.text.clear() // Limpiamos el campo de entrada
+                saveTasks() // Guardamos las tareas en SharedPreferences
             }
         }
 
-        //agregamos una funcion al listview que es cuando se mantenga presionado por momento le permita eliminar
-        //se utiliza el parent, la vista, la posicion del objeto y el id
-        lvdatos.setOnItemLongClickListener{parent,view, position,id ->
-
-            //Creamos un cuadro de alerta que permita el usuario elegir
+        // Configuramos el ListView para eliminar tareas con una pulsación larga
+        lvdatos.setOnItemLongClickListener { parent, view, position, id ->
+            // Creamos un cuadro de alerta que permita al usuario elegir
             AlertDialog.Builder(this).apply {
-                //titulo de la alerta
-                setTitle("Confirmar Eliminacion")
-                //mensaje de la alerta
-                setMessage("Estas seguro de eliminar esta tarea")
-                //si presiona si
-                setPositiveButton("SI"){dialog, which ->
-
-                    //con esta funcion removemos el objeto de la posicion
+                // Título de la alerta
+                setTitle("Confirmar Eliminación")
+                // Mensaje de la alerta
+                setMessage("¿Estás seguro de eliminar esta tarea?")
+                // Si presiona "Sí"
+                setPositiveButton("Sí") { dialog, which ->
+                    // Removemos el objeto de la posición
                     datos.removeAt(position)
-                    //notificamos si quiere ser eliminado
+                    // Notificamos al adaptador del cambio
                     taskAdapter.notifyDataSetChanged()
-                }//si presiona NO
+                    saveTasks() // Guardamos las tareas en SharedPreferences
+                }
+                // Si presiona "No"
                 setNegativeButton("No") { dialog, which ->
                     // Cancelamos la acción
                     dialog.dismiss()
@@ -67,6 +72,26 @@ class MainActivity : ComponentActivity() {
                 show()
             }
             true
+        }
+    }
+
+    private fun saveTasks() {
+        val sharedPreferences = getSharedPreferences("tasks_prefs", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        val gson = Gson()
+        val json = gson.toJson(datos)
+        editor.putString("tasks_list", json)
+        editor.apply()
+    }
+
+    private fun loadTasks() {
+        val sharedPreferences = getSharedPreferences("tasks_prefs", MODE_PRIVATE)
+        val gson = Gson()
+        val json = sharedPreferences.getString("tasks_list", null)
+        val type = object : TypeToken<MutableList<Task>>() {}.type
+        if (json != null) {
+            val loadedTasks: MutableList<Task> = gson.fromJson(json, type)
+            datos.addAll(loadedTasks)
         }
     }
 }

@@ -3,7 +3,7 @@
 # Alumnos
 * Hazel Alejandra Ramos Vasquez RV230413
 * Julian Benjamin Moreno Castillo MC230813
-* Jorge Nahum Mira Flores
+* Jorge Nahum Mira Flores MF232232
 
 # Procedimiento
 * Hazel Ramos - Realizo diseño de aplicacion y funcion de eliminar task 33%

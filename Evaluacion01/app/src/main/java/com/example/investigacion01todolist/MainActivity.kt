@@ -74,9 +74,12 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun saveTasks() {
+
         val sharedPreferences = getSharedPreferences("tasks_prefs", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
+
         val tasksString = datos.joinToString(";") { "${it.name},${it.isCompleted}" }
+
         editor.putString("tasks_list", tasksString)
         editor.apply()
     }

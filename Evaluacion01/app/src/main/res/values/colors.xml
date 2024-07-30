@@ -12,4 +12,7 @@
     <color name="backgroundHeader">#002C3E</color>
     <color name="background_List">#FBF3F2</color>
     <color name="color_completed">#4CAF50</color>
+
+
+    <color name="background_app">#002C3E</color>
 </resources>

@@ -15,7 +15,9 @@
         android:orientation="horizontal"
         android:padding="1dp"
         android:gravity="center_vertical|center_horizontal"
-        android:background="@color/backgroundHeader">
+        android:background="@color/background_app">
+        <!-- resource color -->
+
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="100dp"
@@ -27,18 +29,17 @@
             android:layout_width="230dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:hint="Agregar nueva tarea"
+            android:hint="@string/barra_agregar"
             android:textColor="@color/white"
             android:textColorHint="@color/white"/>
 
         <Button
             android:id="@+id/btnAddTask"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="+"
-            android:textColor="@color/white"
-            android:background="@drawable/rounded_button"/>
+            android:background="@drawable/actividad_dos_puntos_drawable"
+            android:layout_centerInParent="true"/>
 
 
     </LinearLayout>

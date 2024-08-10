@@ -15,8 +15,8 @@
         android:orientation="horizontal"
         android:padding="1dp"
         android:gravity="center_vertical|center_horizontal"
-        android:background="@color/background_app">
-        <!-- resource color -->
+        android:background="@color/background_app">        <!-- resource color -->
+
 
         <ImageView
             android:id="@+id/imageView"
@@ -38,8 +38,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="+"
-            android:background="@drawable/actividad_dos_puntos_drawable"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            android:background="@drawable/actividad_dos_puntos_drawable" /> <!-- resource drawable -->
 
 
     </LinearLayout>
